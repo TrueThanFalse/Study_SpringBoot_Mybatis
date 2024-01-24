@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{layout :: setFragment(~{this::content})}">
+	<th:block th:fragment="content">
+	
+	<div class="container-md">
+		<form action="/board/modify" method="post">
+			<div class="input-group mb-3">
+			  <span class="input-group-text" id="modAtSpan">ModAt</span>
+			  <input type="text" class="form-control" name="modAt" th:value="${bvo.modAt}" aria-label="title" aria-describedby="modAtSpan" readonly>
+			</div>
+			<div class="input-group mb-3">
+			  <span class="input-group-text" id="titleSpan">Title</span>
+			  <input type="text" class="form-control" name="title" th:value="${bvo.title}" aria-label="title" aria-describedby="titleSpan" readonly>
+			</div>
+			<div class="input-group mb-3">
+			  <span class="input-group-text" id="writerSpan">Writer</span>
+			  <input type="text" class="form-control" name="writer" th:value="${bvo.writer}" aria-label="writer" aria-describedby="writerSpan" readonly>
+			</div>
+			<div class="input-group">
+			  <span class="input-group-text">Content</span>
+			  <textarea class="form-control" name="content" aria-label="With textarea" readonly>[[${bvo.content}]]</textarea>
+			</div>
+			<div class="input-group">
+				<a href="/board/list"><button type="button" class="btn btn-primary">BoardList</button></a>
+				<button type="submit" class="btn btn-success">Modify</button>
+				<!-- 파라미터를 전송해야 할 때는 th:href 형식으로 작성해야 한다. -->
+				<a th:href="@{/board/delete(bno=${bvo.bno})}"><button type="button" class="btn btn-danger">Delete</button></a>
+			</div>
+			
+			<input type="hidden" name="bno" th:value="${bvo.bno}">
+		</form>
+	</div>
+	
+	</th:block> <!--/* th:fragment */-->
+</th:block> <!--/* th:replace */-->

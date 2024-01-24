@@ -1,11 +1,11 @@
 <<< 2024-01-23 >>>
 // board Table 생성
-create table board(
-bno bigint auto_increment,
-title varchar(200) not null,
-writer varchar(200) not null,
-content text not null,
-reg_at datetime default now(),
-mod_at datetime default now(),
-primary key(bno)
+CREATE TABLE board(
+bno BIGINT AUTO_INCREMENT,
+title VARCHAR(200) NOT NULL,
+writer VARCHAR(200) NOT NULL,
+content TEXT NOT NULL,
+reg_at DATETIME DEFAULT NOW(),
+mod_at DATETIME DEFAULT NOW(),
+PRIMARY KEY(bno)
 );

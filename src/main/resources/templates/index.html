@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thyneleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:replace="~{/layout :: setFragment(~{this::content})}">
 	<th:block th:fragment="content">
@@ -12,6 +12,13 @@
     Someone famous in <cite title="Source Title">Source Title</cite>
   </figcaption>
 </figure>
+	
+	<script type="text/javascript" th:inline="javascript">
+		const registerBvoMsg = `[[${registerBvoMsg}]]`;
+		if(registerBvoMsg > 0){
+			alert('게시글 등록 성공!');
+		}
+	</script>
 	
 	</th:block>
 </th:block>

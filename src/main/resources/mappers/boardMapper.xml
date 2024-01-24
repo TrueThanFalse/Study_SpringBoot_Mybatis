@@ -5,4 +5,30 @@
 
 <mapper namespace="com.example.mybatis.repository.BoardMapper">
 
+	<insert id="insertBvo">
+		INSERT INTO board(title, writer, content)
+		VALUES(#{title}, #{writer}, #{content})
+	</insert>
+
+	<select id="selectAllBvoList" resultType="bvo">
+		SELECT * FROM board
+		ORDER BY bno DESC
+	</select>
+	
+	<select id="selectOneBvo" resultType="bvo">
+		SELECT * FROM board
+		WHERE bno = #{bno}
+	</select>
+	
+	<delete id="deleteBvo">
+		DELETE FROM board
+		WHERE bno = #{bno}
+	</delete>
+	
+	<update id="updateBvo">
+		UPDATE board
+		SET title = #{title}, writer = #{writer}, content = #{content}, mod_at = NOW()
+		WHERE bno = #{bno}
+	</update>
+	
 </mapper>
