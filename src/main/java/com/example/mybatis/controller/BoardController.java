@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.mybatis.domain.BoardVO;
+import com.example.mybatis.domain.PagingVO;
+import com.example.mybatis.handler.PagingHandler;
 import com.example.mybatis.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,7 @@ public class BoardController {
 		// index.html로 전송할 때는 항상 redirect:/를 사용해야 URL에 맵핑 경로가 남지 않는다.
 	}
 	
+	/*
 	@GetMapping("/list")
 	public void list(Model m) {
 		log.info("@@@@@ Get list Method Join Success");
@@ -55,6 +58,28 @@ public class BoardController {
 		
 		m.addAttribute("list", list);
 	}
+	*/
+	@GetMapping("/list")
+	public void list(Model m, PagingVO pgvo) {
+		log.info("@@@@@ Get list Method Join Success");
+		log.info("@@@@@ Get list Method pgvo @@@ " + pgvo);
+		
+		List<BoardVO> list = msv.getBvoList(pgvo);
+		if(list.size() > 0) {
+			log.info("@@@@@ List<BoardVO> list @@@ Success");
+		}
+		
+		m.addAttribute("list", list);
+		
+		// totalCount 구하기 (pgvo는 검색할 때 필요)
+		int totalCount = msv.getTotalCount(pgvo);
+		
+		// PagingHandler 객체 생성
+		PagingHandler ph = new PagingHandler(pgvo, totalCount);
+		
+		// PagingHandler 객체 보내기
+		m.addAttribute("ph", ph);
+	}
 	
 	@GetMapping("/detail")
 	public void detail(@RequestParam("bno") long bno, Model m) {
@@ -64,11 +89,22 @@ public class BoardController {
 		m.addAttribute("bvo", bvo);
 	}
 	
+	/*
 	@PostMapping("/modify")
 	public void modify(BoardVO bvo, Model m) {
 		log.info("@@@@@ Post modify Method Join Success");
 		
 		m.addAttribute("bvo", bvo);
+	}
+	*/
+	@PostMapping("/modify")
+	public String modify(BoardVO bvo, RedirectAttributes re) {
+		log.info("@@@@@ Post modify Method Join Success");
+		
+		int isOK = msv.editBvo(bvo);
+		log.info("@@@@@ editBvo @@@ " + (isOK > 0 ? "Success" : "Fail"));
+		
+		return "redirect:/board/detail?bno="+bvo.getBno();
 	}
 	
 	@GetMapping("/delete")
@@ -81,6 +117,7 @@ public class BoardController {
 		return "redirect:/";
 	}
 	
+	/*
 	@PostMapping("/edit")
 	public String edit(BoardVO bvo) {
 		log.info("@@@@@ Post edit Method Join Success");
@@ -90,5 +127,6 @@ public class BoardController {
 		
 		return "redirect:/board/list";
 	}
+	*/
 
 }

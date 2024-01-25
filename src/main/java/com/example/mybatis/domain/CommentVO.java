@@ -1,7 +1,6 @@
 package com.example.mybatis.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,13 +11,13 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class BoardVO {
-
+public class CommentVO {
+	
+	private long cno;
 	private long bno;
-	private String title;
 	private String writer;
 	private String content;
 	private String regAt;
 	private String modAt;
+	
 }

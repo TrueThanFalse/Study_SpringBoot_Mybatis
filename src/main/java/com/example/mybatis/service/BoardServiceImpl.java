@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.mybatis.domain.BoardVO;
+import com.example.mybatis.domain.PagingVO;
 import com.example.mybatis.repository.BoardMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<BoardVO> getBvoList() {
+	public List<BoardVO> getBvoList(PagingVO pgvo) {
 		// TODO Auto-generated method stub
-		return bmapper.selectAllBvoList();
+		return bmapper.selectAllBvoList(pgvo);
 	}
 
 	@Override
@@ -45,5 +46,11 @@ public class BoardServiceImpl implements BoardService{
 	public int editBvo(BoardVO bvo) {
 		// TODO Auto-generated method stub
 		return bmapper.updateBvo(bvo);
+	}
+
+	@Override
+	public int getTotalCount(PagingVO pgvo) {
+		// TODO Auto-generated method stub
+		return bmapper.selectAllBvoCount(pgvo);
 	}
 }

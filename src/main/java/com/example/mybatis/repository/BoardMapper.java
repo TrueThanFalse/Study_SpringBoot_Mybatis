@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.annotation.Bean;
 
 import com.example.mybatis.domain.BoardVO;
+import com.example.mybatis.domain.PagingVO;
 
 /*
  * DataBaseConfig 내부의 메서드
@@ -23,12 +24,14 @@ public interface BoardMapper {
 
 	int insertBvo(BoardVO bvo);
 
-	List<BoardVO> selectAllBvoList();
+	List<BoardVO> selectAllBvoList(PagingVO pgvo);
 
 	BoardVO selectOneBvo(long bno);
 
 	int deleteBvo(long bno);
 
 	int updateBvo(BoardVO bvo);
+
+	int selectAllBvoCount(PagingVO pgvo);
 
 }
