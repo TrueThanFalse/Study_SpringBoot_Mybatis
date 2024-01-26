@@ -54,9 +54,36 @@
 				  	<div class="ms-2 me-auto">
 				  		<div class="fw-bold">Writer</div>
 				  		Content for Comment
+				  		<span>modAt</span>
 				  	</div>
 				  </li>
 				</ul>
+			</div>
+			<!-- More 라인 -->
+			<div class="row">
+				<div class="col d-gird">
+					<button type="button" id="moreBtn" class="btn btn-primary"
+						data-page="1" style="visibility: hidden;">
+						More +</button>
+				</div>
+			</div>
+			
+			<!-- 모달창 라인 -->			
+			<div class="modal" tabindex="-1" id="myModal">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">Comment Modify</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <div class="input-group mb-3">
+							  <input type="text" id="cmtTextModal" class="form-control" placeholder="Add Comment" aria-label="Username" aria-describedby="basic-addon1">
+							  <button type="button" id="cmtModalBtn" class="btn btn-primary">수정 완료</button>
+							</div>
+			    	</div>
+			  	</div>
+				</div>
 			</div>
 			
 			<!-- 데이터를 숨겨서 Form 태그 정보를 보내고 싶을 때 사용 방법 -->
@@ -66,11 +93,16 @@
 			
 		<!-- static이 default 경로임 -->
 		<script type="text/javascript" th:inline="javascript">
-			const bnoVal = `[[${bvo.bno}]]`;
+			const bnoVal = [[${bvo.bno}]];
+			console.log('bno : ', bnoVal);
 		</script>
 		
 		<script type="text/javascript" th:src="@{/js/boardDetail.js}"></script>
 		<script type="text/javascript" th:src="@{/js/boardComment.js}"></script>
+		
+		<script type="text/javascript">
+			spreadCommentList(bnoVal);
+		</script>
 		
 		</div> <!-- class="container-md" -->
 	</th:block> <!--/* th:fragment */-->

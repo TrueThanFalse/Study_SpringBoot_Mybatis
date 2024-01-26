@@ -5,6 +5,27 @@
 
 <mapper namespace="com.example.mybatis.repository.CommentMapper">
 
+	<insert id="insertCvo">
+		INSERT INTO comment(bno, writer, content)
+		VALUES(#{bno}, #{writer}, #{content})
+	</insert>
 
+	<select id="getList" resultType="cvo">
+		SELECT * FROM comment
+		WHERE bno = #{bno}
+		ORDER BY cno DESC
+		LIMIT #{pgvo.pageStart}, #{pgvo.qty}
+	</select>
+
+	<update id="updateCvo">
+		UPDATE comment
+		SET content = #{content}, mod_at = NOW()
+		WHERE cno = #{cno}
+	</update>
+
+	<select id="bnoTotalCount" resultType="int">
+		SELECT COUNT(cno) FROM comment
+		WHERE bno = #{bno}
+	</select>
 
 </mapper>
