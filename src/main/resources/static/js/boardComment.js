@@ -72,7 +72,7 @@ async function spreadCommentList(bno, page=1){
          if(page == 1){ // page가 1일 때만
             // ul에 원래 있던 html 값 초기화
             cmtListArea.innerHTML = '';
-         }
+         };
 
          for(let cvo of result.cmtList){
             let li = `<li data-cno="${cvo.cno}" class="list-group-item">`;
@@ -98,12 +98,12 @@ async function spreadCommentList(bno, page=1){
                moreBtn.dataset.page = page + 1;
             }else{
                moreBtn.style.visibility = 'hidden'; // 숨김
-            }
-         }
+            };
+         };
       }else{
          let li = `<li class="list-group-item">Comment List Empty</li>`;
          cmtListArea.innerHTML = li;
-      }
+      };
    });
 };
 
@@ -129,23 +129,29 @@ document.addEventListener('click', (e)=>{
 
       editCommentToServer(cmtDataModal).then(result =>{
          if(result === "1"){
-            // 모달창 닫기
-            document.querySelector('.btn-close').click();
-
-            alert("수정 성공");
-            
+            document.querySelector('.btn-close').click(); // 모달창 닫기
+            alert("댓글 수정 성공");
             spreadCommentList(bnoVal);
          };
       });
 
    }else if(e.target.classList.contains('del')){ // 댓글 삭제 버튼
+      let li = e.target.closest('li');
+      let cnoVal = li.dataset.cno;
       
+      deleteCommentToServer(cnoVal).then(result =>{
+         if(result === "1"){
+            alert("댓글 삭제 성공");
+            spreadCommentList(bnoVal);
+         };
+      });
 
    }else if(e.target.id == 'moreBtn'){ // 댓글 더보기(more) 버튼
       spreadCommentList(bnoVal, parseInt(e.target.dataset.page));
-   }
+   };
 });
 
+// 모달창 수정 비동기 통신
 async function editCommentToServer(cmtDataModal){
    try {
       const url = '/comment/edit';
@@ -163,5 +169,28 @@ async function editCommentToServer(cmtDataModal){
       return result;
    } catch (error) {
       console.log(error);
-   }
-}
+   };
+};
+
+// 삭제 비동기 통신
+async function deleteCommentToServer(cnoVal){
+   try {
+      const url = '/comment/delete';
+      const config = {
+         method : 'delete',
+         headers : {
+            'content-type':'application/json; charset=utf-8'
+         },
+         body : JSON.stringify({cno : cnoVal})
+         // 일반적으로 변수 하나만 전송할 것이라면
+         // get 방식 전송(쿼리스트링 & PathVariable)이 효율적임
+      };
+
+      const resp = await fetch(url,config);
+      const result = await resp.text();
+
+      return result;
+   } catch (error) {
+      console.log(error);
+   };
+};

@@ -15,6 +15,7 @@
 	<typeAliases>
 		<typeAlias alias="bvo" type="com.example.mybatis.domain.BoardVO"/>
 		<typeAlias alias="cvo" type="com.example.mybatis.domain.CommentVO"/>
+		<typeAlias alias="fvo" type="com.example.mybatis.domain.FileVO"/>
 	</typeAliases>
 	
 </configuration>

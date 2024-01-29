@@ -9,14 +9,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.mybatis.domain.BoardDTO;
 import com.example.mybatis.domain.BoardVO;
+import com.example.mybatis.domain.FileVO;
 import com.example.mybatis.domain.PagingVO;
+import com.example.mybatis.handler.FileHandler;
 import com.example.mybatis.handler.PagingHandler;
 import com.example.mybatis.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -27,18 +31,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class BoardController {
 
-	private final BoardService msv;
+	private final BoardService bsv;
+	private final FileHandler fh;
 	
 	@GetMapping("/register")
 	public void register() {
 		log.info("@@@@@ Get register Method Join Success");
 	}
 	
+	/*
 	@PostMapping("/register")
 	public String register(BoardVO bvo, RedirectAttributes re) {
 		log.info("@@@@@ Post register Method Join Success");
 		
 		int isOK = msv.registerBvo(bvo);
+		log.info("@@@@@ Post Register @@@ " + (isOK > 0 ? "Success" : "Fail"));
+		
+		re.addFlashAttribute("registerBvoMsg", isOK);
+		return "redirect:/";
+		// index.html로 전송할 때는 항상 redirect:/를 사용해야 URL에 맵핑 경로가 남지 않는다.
+	}
+	*/
+	
+	@PostMapping("/register")
+	public String register(BoardVO bvo, RedirectAttributes re,
+			@RequestParam(name="files", required = false) MultipartFile[] files) {
+		log.info("@@@@@ Post register Method Join Success");
+		
+		List<FileVO> flist = null;
+		if(files[0].getSize() > 0 || files != null) {
+			// 파일 핸들러 작업
+			flist = fh.uploadFiles(files);
+		}
+		
+		int isOK = bsv.registerDTO(new BoardDTO(bvo, flist));
 		log.info("@@@@@ Post Register @@@ " + (isOK > 0 ? "Success" : "Fail"));
 		
 		re.addFlashAttribute("registerBvoMsg", isOK);
@@ -64,7 +90,7 @@ public class BoardController {
 		log.info("@@@@@ Get list Method Join Success");
 		log.info("@@@@@ Get list Method pgvo @@@ " + pgvo);
 		
-		List<BoardVO> list = msv.getBvoList(pgvo);
+		List<BoardVO> list = bsv.getBvoList(pgvo);
 		if(list.size() > 0) {
 			log.info("@@@@@ List<BoardVO> list @@@ Success");
 		}
@@ -72,7 +98,7 @@ public class BoardController {
 		m.addAttribute("list", list);
 		
 		// totalCount 구하기 (pgvo는 검색할 때 필요)
-		int totalCount = msv.getTotalCount(pgvo);
+		int totalCount = bsv.getTotalCount(pgvo);
 		
 		// PagingHandler 객체 생성
 		PagingHandler ph = new PagingHandler(pgvo, totalCount);
@@ -85,8 +111,8 @@ public class BoardController {
 	public void detail(@RequestParam("bno") long bno, Model m) {
 		log.info("@@@@@ Get detail Method Join Success");
 		
-		BoardVO bvo = msv.getBvo(bno);
-		m.addAttribute("bvo", bvo);
+		BoardDTO bdto = bsv.getDetail(bno);
+		m.addAttribute("bdto", bdto);
 	}
 	
 	/*
@@ -101,7 +127,7 @@ public class BoardController {
 	public String modify(BoardVO bvo, RedirectAttributes re) {
 		log.info("@@@@@ Post modify Method Join Success");
 		
-		int isOK = msv.editBvo(bvo);
+		int isOK = bsv.editBvo(bvo);
 		log.info("@@@@@ editBvo @@@ " + (isOK > 0 ? "Success" : "Fail"));
 		
 		return "redirect:/board/detail?bno="+bvo.getBno();
@@ -111,7 +137,7 @@ public class BoardController {
 	public String delete(@RequestParam("bno") long bno) {
 		log.info("@@@@@ Get delete Method Join Success");
 		
-		int isOK = msv.deleteBvo(bno);
+		int isOK = bsv.deleteBvo(bno);
 		log.info("@@@@@ deleteBvo @@@ " + (isOK > 0 ? "Success" : "Fail"));
 		
 		return "redirect:/";

@@ -58,4 +58,10 @@ public class CommentServiceImpl implements CommentService{
 				
 		return ph;
 	}
+
+	@Override
+	public int delete(CommentVO cvo) {
+		// TODO Auto-generated method stub
+		return cmapper.delete(cvo);
+	}
 }

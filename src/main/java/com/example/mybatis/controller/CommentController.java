@@ -1,11 +1,8 @@
 package com.example.mybatis.controller;
 
-import java.util.List;
-
-import org.springframework.http.RequestEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,8 +65,19 @@ public class CommentController {
 	@PutMapping("/edit")
 	@ResponseBody
 	public String edit(@RequestBody CommentVO cvo) {
+		log.info("@@@@@ Put edit Method Join Success");
 		log.info("@@@@@ cvo @@@ ", cvo);
 		int isOK = csv.edit(cvo);
 		return isOK > 0 ? "1" : "0";
 	}
+	
+	@DeleteMapping("/delete")
+	@ResponseBody
+	public String delete(@RequestBody CommentVO cvo) {
+		log.info("@@@@@ Delete delete Method Join Success");
+		log.info("@@@@@ cvo @@@ ", cvo);
+		int isOK = csv.delete(cvo);
+		return isOK > 0 ? "1" : "0";
+	}
+	
 }

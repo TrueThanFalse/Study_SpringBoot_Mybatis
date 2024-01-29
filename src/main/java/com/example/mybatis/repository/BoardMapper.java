@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.annotation.Bean;
 
+import com.example.mybatis.domain.BoardDTO;
 import com.example.mybatis.domain.BoardVO;
 import com.example.mybatis.domain.PagingVO;
 
@@ -22,8 +23,6 @@ import com.example.mybatis.domain.PagingVO;
 @Mapper
 public interface BoardMapper {
 
-	int insertBvo(BoardVO bvo);
-
 	List<BoardVO> selectAllBvoList(PagingVO pgvo);
 
 	BoardVO selectOneBvo(long bno);
@@ -33,5 +32,9 @@ public interface BoardMapper {
 	int updateBvo(BoardVO bvo);
 
 	int selectAllBvoCount(PagingVO pgvo);
+
+	int insertBvo(BoardVO bvo);
+
+	long getBno();
 
 }

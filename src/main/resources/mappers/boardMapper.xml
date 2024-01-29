@@ -68,4 +68,8 @@
 		</if>
 	</sql>
 	
+	<select id="getBno" resultType="long">
+		SELECT MAX(bno) FROM board
+	</select>
+	
 </mapper>

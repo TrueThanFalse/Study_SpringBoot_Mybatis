@@ -20,3 +20,15 @@ reg_at DATETIME DEFAULT NOW(),
 mod_at DATETIME DEFAULT NOW(),
 PRIMARY KEY(cno)
 );
+
+<<< 2024-01-29 >>>
+CREATE TABLE file(
+uuid VARCHAR(256),
+save_dir VARCHAR(256) NOT NULL,
+file_name VARCHAR(256) NOT NULL,
+file_type int(1) DEFAULT 0,
+bno BIGINT NOT NULL,
+file_size BIGINT NOT NULL,
+reg_at DATETIME DEFAULT NOW(),
+PRIMARY KEY(uuid)
+);

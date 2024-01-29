@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.mybatis.domain.BoardDTO;
 import com.example.mybatis.domain.BoardVO;
+import com.example.mybatis.domain.FileVO;
 import com.example.mybatis.domain.PagingVO;
 import com.example.mybatis.repository.BoardMapper;
+import com.example.mybatis.repository.FileMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +20,21 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardServiceImpl implements BoardService{
 
 	private final BoardMapper bmapper;
+	private final FileMapper fmapper;
 
 	@Override
-	public int registerBvo(BoardVO bvo) {
+	public int registerDTO(BoardDTO bdto) {
 		// TODO Auto-generated method stub
-		return bmapper.insertBvo(bvo);
+		int isOK = bmapper.insertBvo(bdto.getBvo());
+		if(isOK > 0) {
+			long bno = bmapper.getBno();
+			for(FileVO fvo : bdto.getFlist()) {
+				fvo.setBno(bno);
+				isOK *= fmapper.insertFile(fvo);
+			}
+		}
+		
+		return isOK;
 	}
 
 	@Override
@@ -31,9 +44,12 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public BoardVO getBvo(long bno) {
+	public BoardDTO getDetail(long bno) {
 		// TODO Auto-generated method stub
-		return bmapper.selectOneBvo(bno);
+		BoardDTO bdto = new BoardDTO();
+		bdto.setBvo(bmapper.selectOneBvo(bno));
+		bdto.setFlist(fmapper.getFileList(bno));
+		return bdto;
 	}
 
 	@Override
@@ -52,5 +68,11 @@ public class BoardServiceImpl implements BoardService{
 	public int getTotalCount(PagingVO pgvo) {
 		// TODO Auto-generated method stub
 		return bmapper.selectAllBvoCount(pgvo);
+	}
+
+	@Override
+	public int registerBvo(BoardVO bvo) {
+		// TODO Auto-generated method stub
+		return bmapper.insertBvo(bvo);
 	}
 }

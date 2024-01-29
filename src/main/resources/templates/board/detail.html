@@ -2,25 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{layout :: setFragment(~{this::content})}">
 	<th:block th:fragment="content">
+	<!-- th:with => Alias 설정, c:set과 같은 기능 -->
+	<!-- th:with는 적용 시키는 범위를 잡아줘야 한다. -->
+	<th:block th:with="bvo=${bdto.bvo}">
 		<div class="container-md">
 		
-			<br>
+			<br>			
 			<form action="/board/modify" method="post" id="modForm">
 				<div class="input-group mb-3">
 				  <span class="input-group-text" id="modAtSpan">ModAt</span>
-				  <input type="text" class="form-control" name="modAt" th:value="${bvo.modAt}" aria-label="title" aria-describedby="modAtSpan" readonly>
+				  <input type="text" class="form-control" name="modAt" th:value="${bdto.bvo.modAt}" aria-label="title" aria-describedby="modAtSpan" readonly>
 				</div>
 				<div class="input-group mb-3">
 				  <span class="input-group-text" id="titleSpan">Title</span>
-				  <input type="text" class="form-control" id="title" name="title" th:value="${bvo.title}" aria-label="title" aria-describedby="titleSpan" readonly>
+				  <input type="text" class="form-control" id="title" name="title" th:value="${bdto.bvo.title}" aria-label="title" aria-describedby="titleSpan" readonly>
 				</div>
 				<div class="input-group mb-3">
 				  <span class="input-group-text" id="writerSpan">Writer</span>
-				  <input type="text" class="form-control" name="writer" th:value="${bvo.writer}" aria-label="writer" aria-describedby="writerSpan" readonly>
+				  <input type="text" class="form-control" name="writer" th:value="${bdto.bvo.writer}" aria-label="writer" aria-describedby="writerSpan" readonly>
 				</div>
 				<div class="input-group">
 				  <span class="input-group-text">Content</span>
-				  <textarea class="form-control" id="content" name="content" aria-label="With textarea" readonly>[[${bvo.content}]]</textarea>
+				  <textarea class="form-control" id="content" name="content" aria-label="With textarea" readonly>[[${bdto.bvo.content}]]</textarea>
 				</div>
 				<br>
 				<div class="input-group" id="DivBtn">
@@ -36,7 +39,7 @@
 					<button type="button" class="btn btn-danger" id="delBtn">Delete</button>
 				</div>
 				
-				<input type="hidden" name="bno" th:value="${bvo.bno}">
+				<input type="hidden" name="bno" th:value="${bdto.bvo.bno}">
 			</form>
 			<hr>
 		
@@ -48,7 +51,7 @@
 				  <input type="text" id="cmtText" class="form-control" placeholder="Add Comment" aria-label="Username" aria-describedby="basic-addon1">
 				  <button type="button" id="cmtPostBtn" class="btn btn-primary">Comment Post</button>
 				</div>
-				<!-- 댓글 표시 라인 -->
+				<!-- 댓글 표시 라인 (layout)-->
 				<ul class="list-group list-group-flush" id="cmtListArea">
 				  <li class="list-group-item">
 				  	<div class="ms-2 me-auto">
@@ -59,12 +62,14 @@
 				  </li>
 				</ul>
 			</div>
+			
 			<!-- More 라인 -->
 			<div class="row">
 				<div class="col d-gird">
 					<button type="button" id="moreBtn" class="btn btn-primary"
 						data-page="1" style="visibility: hidden;">
-						More +</button>
+						More +
+					</button>
 				</div>
 			</div>
 			
@@ -86,24 +91,46 @@
 				</div>
 			</div>
 			
+			<!-- 파일 표시 라인 -->
+			<div class="mb-3">
+				<ul class="list-group list-group-flush">
+			  	<li class="list-group-item" th:each="fvo:${bdto.flist}">
+			  		<div th:if="${fvo.fileType > 0}">
+				  		<img alt="" th:src="@{|/upload/${fvo.saveDir}/${fvo.uuid}_th_${fvo.fileName}|}">
+				  	</div>
+				  	<div th:unless="${fvo.fileType > 0}">
+				  	<!-- 파일 모양 아이콘 -->
+				  	(파일 모양 아이콘)
+				  	</div>
+				  	<div class="mb-2 me-auto">
+					  	<div class="fw-bold">[[${fvo.fileName}]]</div>
+					  	[[${fvo.regAt}]]
+					  	<span class="badge rounded-pill text-bg-primary">[[${fvo.fileSize}]]Byte</span>
+			  		</div>
+			  	</li>	
+				</ul>
+			</div>	
+			<!-- 파일 표시 라인 끝 -->
+			
 			<!-- 데이터를 숨겨서 Form 태그 정보를 보내고 싶을 때 사용 방법 -->
 			<form action="/board/delete" method="post" id="delForm" style="display: none;">
-				<input type="hidden" name="bno" th:value="${bvo.bno}">
+				<input type="hidden" name="bno" th:value="${bdto.bvo.bno}">
 			</form>
 			
-		<!-- static이 default 경로임 -->
-		<script type="text/javascript" th:inline="javascript">
-			const bnoVal = [[${bvo.bno}]];
-			console.log('bno : ', bnoVal);
-		</script>
-		
-		<script type="text/javascript" th:src="@{/js/boardDetail.js}"></script>
-		<script type="text/javascript" th:src="@{/js/boardComment.js}"></script>
-		
-		<script type="text/javascript">
-			spreadCommentList(bnoVal);
-		</script>
+			<!-- static이 default 경로임 -->
+			<script type="text/javascript" th:inline="javascript">
+				const bnoVal = [[${bdto.bvo.bno}]];
+				console.log('bno : ', bnoVal);
+			</script>
+			
+			<script type="text/javascript" th:src="@{/js/boardDetail.js}"></script>
+			<script type="text/javascript" th:src="@{/js/boardComment.js}"></script>
+			
+			<script type="text/javascript">
+				spreadCommentList(bnoVal);
+			</script>
 		
 		</div> <!-- class="container-md" -->
+	</th:block>	<!-- th:with="bvo=${bdto.bvo}" -->
 	</th:block> <!--/* th:fragment */-->
 </th:block> <!--/* th:replace */-->
