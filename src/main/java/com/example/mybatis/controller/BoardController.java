@@ -123,11 +123,28 @@ public class BoardController {
 		m.addAttribute("bvo", bvo);
 	}
 	*/
+	/*
 	@PostMapping("/modify")
 	public String modify(BoardVO bvo, RedirectAttributes re) {
 		log.info("@@@@@ Post modify Method Join Success");
 		
 		int isOK = bsv.editBvo(bvo);
+		log.info("@@@@@ editBvo @@@ " + (isOK > 0 ? "Success" : "Fail"));
+		
+		return "redirect:/board/detail?bno="+bvo.getBno();
+	}
+	*/
+	@PostMapping("/modify")
+	public String modify(BoardVO bvo, RedirectAttributes re,
+			@RequestParam(name="files", required = false) MultipartFile[] files) {
+		log.info("@@@@@ Post modify Method Join Success");
+		
+		List<FileVO> flist = null;
+		if(files[0].getSize() > 0 || files != null) {
+			flist = fh.uploadFiles(files);
+		}
+		
+		int isOK = bsv.editBvo(new BoardDTO(bvo, flist));
 		log.info("@@@@@ editBvo @@@ " + (isOK > 0 ? "Success" : "Fail"));
 		
 		return "redirect:/board/detail?bno="+bvo.getBno();

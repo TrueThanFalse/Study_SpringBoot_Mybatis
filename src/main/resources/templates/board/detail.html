@@ -8,7 +8,7 @@
 		<div class="container-md">
 		
 			<br>			
-			<form action="/board/modify" method="post" id="modForm">
+			<form action="/board/modify" method="post" id="modForm" enctype="multipart/form-data">
 				<div class="input-group mb-3">
 				  <span class="input-group-text" id="modAtSpan">ModAt</span>
 				  <input type="text" class="form-control" name="modAt" th:value="${bdto.bvo.modAt}" aria-label="title" aria-describedby="modAtSpan" readonly>
@@ -40,6 +40,23 @@
 				</div>
 				
 				<input type="hidden" name="bno" th:value="${bdto.bvo.bno}">
+				
+				<!-- 새로운 file upload 등록 라인 -->
+				<div class="mb-3">
+				  <label for="files" class="form-label">files...</label>
+				  <input type="file" name="files" class="form-control" id="files" multiple="multiple" style="display: none">
+				  <!-- <input type="file">태그는 모양을 변화시킬 수 없으므로 트리거를 활용하여 다양한 모양으로 버튼을 만들 수 있음 -->
+				  <br>
+				  <button type="button" class="btn btn-primary" id="trigger">fileUpload</button>
+				  <!-- 트리거를 사용하기 위한 버튼 -->
+				</div>
+				<!-- 파일 목록 표기 라인 -->
+				<div class="mb-3" id="fileZone">
+					<!-- 첨부 파일이 표시될 영역 -->
+				</div>
+				<input type="hidden" id="regBtn">
+				<!-- file upload 라인 끝 -->
+				
 			</form>
 			<hr>
 		
@@ -125,6 +142,7 @@
 			
 			<script type="text/javascript" th:src="@{/js/boardDetail.js}"></script>
 			<script type="text/javascript" th:src="@{/js/boardComment.js}"></script>
+			<script type="text/javascript" th:src="@{/js/boardRegister.js}"></script>
 			
 			<script type="text/javascript">
 				spreadCommentList(bnoVal);

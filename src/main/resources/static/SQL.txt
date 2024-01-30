@@ -32,3 +32,19 @@ file_size BIGINT NOT NULL,
 reg_at DATETIME DEFAULT NOW(),
 PRIMARY KEY(uuid)
 );
+
+<<< 2024-01-30 >>>
+CREATE TABLE member(
+email VARCHAR(200) not null,
+pwd VARCHAR(256) NOT NULL,
+nick_name VARCHAR(100),
+reg_at DATETIME DEFAULT NOW(),
+last_login DATETIME,
+PRIMARY KEY(email)
+);
+
+CREATE TABLE auth_member(
+email VARCHAR(200) NOT NULL,
+auth VARCHAR(100) NOT NULL,
+FOREIGN KEY(email) REFERENCES member(email)
+);

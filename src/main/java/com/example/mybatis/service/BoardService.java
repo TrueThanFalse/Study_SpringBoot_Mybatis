@@ -14,7 +14,7 @@ public interface BoardService {
 
 	int deleteBvo(long bno);
 
-	int editBvo(BoardVO bvo);
+	int editBvo(BoardDTO boardDTO);
 
 	int getTotalCount(PagingVO pgvo);
 

@@ -16,6 +16,8 @@
 		<typeAlias alias="bvo" type="com.example.mybatis.domain.BoardVO"/>
 		<typeAlias alias="cvo" type="com.example.mybatis.domain.CommentVO"/>
 		<typeAlias alias="fvo" type="com.example.mybatis.domain.FileVO"/>
+		<typeAlias alias="mvo" type="com.example.mybatis.security.MemberVO"/>
+		<typeAlias alias="avo" type="com.example.mybatis.security.AuthVO"/>
 	</typeAliases>
 	
 </configuration>

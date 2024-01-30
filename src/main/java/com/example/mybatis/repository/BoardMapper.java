@@ -29,7 +29,7 @@ public interface BoardMapper {
 
 	int deleteBvo(long bno);
 
-	int updateBvo(BoardVO bvo);
+	int updateBvo(BoardVO boardVO);
 
 	int selectAllBvoCount(PagingVO pgvo);
 

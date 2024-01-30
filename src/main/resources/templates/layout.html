@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:fragment="setFragment(content)">
 <head>
 <meta charset="UTF-8">
@@ -28,7 +29,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Index</a>
+          <a class="nav-link active" aria-current="page" href="/">Index</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/board/list">BoardList</a>
@@ -36,18 +37,25 @@
         <li class="nav-item">
           <a class="nav-link" href="/board/register">Register</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+        <li class="nav-item" sec:authorize="isAnonymous()">
+          <a class="nav-link" href="/member/register">Sign Up</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+        <li class="nav-item" sec:authorize="isAnonymous()">
+          <a class="nav-link" href="/member/login">Login</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+          <a class="nav-link" href="#">MemberList</a>
         </li>
-        
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <a class="nav-link" href="/member/logout">Logout</a>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+        	<!-- <a class="nav-link" th:href="@{/member/modify}" th:text="${#authentication.name}"></a> -->
+          <a class="nav-link" th:href="@{/member/modify}"
+          th:with="auth=${#authentication.getPrincipal()}"
+          th:text="${auth.mvo.nickName}"></a>
+        </li>
       </ul>
-      
     </div>
   </div>
 </nav>
