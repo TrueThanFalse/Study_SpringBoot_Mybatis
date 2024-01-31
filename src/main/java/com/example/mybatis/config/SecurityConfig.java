@@ -59,7 +59,7 @@ public class SecurityConfig {
 						.passwordParameter("pwd")
 						.loginPage("/member/login")
 						.defaultSuccessUrl("/board/list").permitAll())
-						// Fail 설정은 Security5에선 따로하지 않는다.
+						// Fail 설정은 Security5에선 따로하지 않아도 기본 설정이 되어 있다.
 				.logout(logout -> logout
 						.logoutUrl("/member/logout")
 						.invalidateHttpSession(true)

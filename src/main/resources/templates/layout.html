@@ -47,7 +47,10 @@
           <a class="nav-link" href="#">MemberList</a>
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
-          <a class="nav-link" href="/member/logout">Logout</a>
+          <a class="nav-link" href="" id="logoutLink">Logout</a>
+          <form action="/member/logout" method="post" id="logoutForm">
+          	<!-- <input type="hidden" name="email" th:value="${#authentication.name}"> -->
+          </form>
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
         	<!-- <a class="nav-link" th:href="@{/member/modify}" th:text="${#authentication.name}"></a> -->
@@ -70,6 +73,13 @@
 <div class="mt-4 p-5 bg-light text-black rounded text-center text-center" style="margin-bottom:0">
   <p>Copyright 2021 by Company or Your Name. All Rights Reserved.</p>
 </div>
+
+<script type="text/javascript">
+	document.getElementById('logoutLink').addEventListener('click', (e)=>{
+	   e.preventDefault(); // 클릭한 e 객체에 다른 이벤트가 있다면 삭제하라
+	   document.getElementById('logoutForm').submit();
+	});	
+</script>
 
 </body>
 </th:block>
